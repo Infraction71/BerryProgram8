@@ -29,8 +29,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Getting buttons and views from activity
         displayTV = findViewById(R.id.dispalyTV);
         tidBTN = findViewById(R.id.tidBTN);
+        //Both OCLs do the same thing, one for each button
         tidBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-
+                            //Builds a URL to send to SWAPI, then calls methods to handle it
                             String urlStr = "https://swapi.co/api/planets/";
                             String params = seedBuilder(50);
                             URL url = new URL(urlStr+params);
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String fetchFromURL(URL url) {
+        //Gets the requested JSON doc from SWAPi and returns it as a string
         StringBuilder strBuilder = new StringBuilder();
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -89,16 +92,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String seedBuilder(int bound){
-
+        //Simple method to create the neccessary extension
         Random rnadom = new Random();
         seed = rnadom.nextInt(bound);
         return seed+"/";
     }
+    //Overloaded method. One for starships. First one is for planets
     public void processJSON(final String json){
         this.runOnUiThread (new Runnable() {
             @Override
             public void run() {
                 try{
+                    //Turns String into a JSON object which we can then call getString to... get strings
                     JSONObject responsee = new JSONObject(json);
                     String rtrn = "Name: ";
                     rtrn +=responsee.getString("name");
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         Log.d("Jason", "Stuff's brooke\n" + e.getStackTrace());
                     }
-                    //  fasdfasdf
+
                 }
             } // end run
         });
